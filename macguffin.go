@@ -1,16 +1,15 @@
 package main
 
 import (
+	"bufio"
+	"flag"
 	"fmt"
 	"io"
-	"bufio"
-	"os"
 	"log"
-	"flag"
-	"macguffin/client"
 	"macguffin/article"
+	"macguffin/client"
+	"os"
 )
-
 
 func main() {
 
@@ -24,11 +23,11 @@ func main() {
 
 	flag.Parse()
 
-	if pass == "" || user == "" || addr == ""{
+	if pass == "" || user == "" || addr == "" {
 		flag.PrintDefaults()
 		os.Exit(1)
 	}
-	
+
 	client, err := mgclient.NewUsenetClient(addr)
 	if err != nil {
 		fmt.Println(err)
@@ -42,7 +41,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Start: %d, Num: %d", start, high - start)
+	log.Printf("Start: %d, Num: %d", start, high-start)
 
 	log.Println("Getting overview")
 	overview, err := client.OverviewStartingAt("alt.binaries.multimedia", start)
@@ -62,7 +61,7 @@ func main() {
 		article := mgarticle.ParseArticle(line)
 		fmt.Printf("%s: %s %s %d %d %s\n", article.MessageId, article.Subject, article.Filename, article.NumParts, article.PartSequence, article.Date)
 
-		if counter % 1000 == 0 {
+		if counter%1000 == 0 {
 			log.Println(counter)
 		}
 	}

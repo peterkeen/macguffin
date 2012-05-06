@@ -2,11 +2,11 @@ package mgclient
 
 import (
 	"fmt"
-	"net/textproto"
 	"io"
-	"strings"
 	"log"
 	"macguffin/article"
+	"net/textproto"
+	"strings"
 	"time"
 )
 
@@ -41,15 +41,15 @@ func (client *UsenetClient) Group(group string) (int64, int64, int64, error) {
 	parts := strings.Split(res, " ")
 
 	total := mgarticle.ParseInt64(parts[0])
-	low   := mgarticle.ParseInt64(parts[1])
-	high  := mgarticle.ParseInt64(parts[2])
+	low := mgarticle.ParseInt64(parts[1])
+	high := mgarticle.ParseInt64(parts[2])
 
 	return total, low, high, nil
 }
 
 func (client *UsenetClient) FindStart(group string, retention int) (int64, int64, error) {
 	_, low, originalHigh, _ := client.Group(group)
-	target_date := time.Now().AddDate(0, 0, 0 - retention)
+	target_date := time.Now().AddDate(0, 0, 0-retention)
 
 	high := originalHigh
 
@@ -92,7 +92,7 @@ func (client *UsenetClient) OverviewStartingAt(group string, article int64) (io.
 	return client.conn.DotReader(), nil
 }
 
-func NewUsenetClient(addr string) (client *UsenetClient, err error)  {
+func NewUsenetClient(addr string) (client *UsenetClient, err error) {
 	conn, err := textproto.Dial("tcp", addr)
 	if err != nil {
 		return
@@ -101,7 +101,6 @@ func NewUsenetClient(addr string) (client *UsenetClient, err error)  {
 	if err != nil {
 		return nil, err
 	}
-	
+
 	return &UsenetClient{conn}, nil
 }
-

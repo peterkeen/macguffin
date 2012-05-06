@@ -1,30 +1,29 @@
 package mgarticle
 
 import (
-	"strconv"
-	"log"
-	"strings"
-	"regexp"
-	"time"
 	"errors"
 	"fmt"
+	"log"
+	"regexp"
+	"strconv"
+	"strings"
+	"time"
 )
 
 type Article struct {
 	ArticleId    int64
-	Subject       string
-	From          string
-	Date          string
+	Subject      string
+	From         string
+	Date         string
 	MessageId    string
-	Bytes         int64
-	Lines         int64
-	Xref          string
-	Comment       string
-	Filename      string
+	Bytes        int64
+	Lines        int64
+	Xref         string
+	Comment      string
+	Filename     string
 	NumParts     int64
 	PartSequence int64
 }
-
 
 func ParseInt64(in string) int64 {
 	parsed, err := strconv.ParseInt(in, 10, 64)
@@ -69,7 +68,7 @@ func ParseArticle(line string) *Article {
 		part_sequence = ParseInt64(matches[4])
 		num_parts = ParseInt64(matches[5])
 	}
-	
+
 	return &Article{
 		ParseInt64(parts[0]),
 		subject,
