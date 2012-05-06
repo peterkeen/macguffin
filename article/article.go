@@ -36,8 +36,8 @@ func ParseInt64(in string) int64 {
 func (article *Article) ParsedDate() (time.Time, error) {
 	formats := []string{
 		"02 Jan 2006 15:04:05 MST",
-		"Mon, 02 Jan 2006 15:04:05 MST",
-		"Mon, 02 Jan 2006 15:04:05 -0500",
+		"Mon, _2 Jan 2006 15:04:05 MST",
+		"Mon, _2 Jan 2006 15:04:05 -0500",
 	}
 
 	for _, format := range formats {

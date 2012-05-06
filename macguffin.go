@@ -63,7 +63,11 @@ func main() {
 		}
 
 		article := mgarticle.ParseArticle(line)
-		fmt.Printf("%s: %s %s %d %d %s\n", article.MessageId, article.Subject, article.Filename, article.NumParts, article.PartSequence, article.ParsedDate())
+		date, err := article.ParsedDate()
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Printf("%s: %s %s %d %d %s\n", article.MessageId, article.Subject, article.Filename, article.NumParts, article.PartSequence, date)
 
 		if counter%1000 == 0 {
 			log.Println(counter)
