@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"io"
 	"log"
-	"macguffin/article"
-	"macguffin/client"
+	"github.com/peterkeen/macguffin/article"
+	"github.com/peterkeen/macguffin/client"
 	"os"
 )
 
@@ -32,23 +32,23 @@ func main() {
 		os.Exit(1)
 	}
 
-	client, err := mgclient.NewUsenetClient(addr)
+	cl, err := client.NewUsenetClient(addr)
 	if err != nil {
 		fmt.Println(err)
 	}
 	log.Println("Connected")
-	client.Authenticate(user, pass)
+	cl.Authenticate(user, pass)
 
 	log.Println("Authenticated")
 	log.Println("Finding start")
-	start, high, err := client.FindStart(group, retention)
+	start, high, err := cl.FindStart(group, retention)
 	if err != nil {
 		log.Fatal(err)
 	}
 	log.Printf("Start: %d, Num: %d", start, high-start)
 
 	log.Println("Getting overview")
-	overview, err := client.OverviewStartingAt(group, start)
+	overview, err := cl.OverviewStartingAt(group, start)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -62,12 +62,12 @@ func main() {
 			break
 		}
 
-		article := mgarticle.ParseArticle(line)
-		date, err := article.ParsedDate()
+		art := article.ParseArticle(line)
+		date, err := art.ParsedDate()
 		if err != nil {
 			log.Fatal(err)
 		}
-		fmt.Printf("%s: %s %s %d %d %s\n", article.MessageId, article.Subject, article.Filename, article.NumParts, article.PartSequence, date)
+		fmt.Printf("%s: %s %s %d %d %s\n", art.MessageId, art.Subject, art.Filename, art.NumParts, art.PartSequence, date)
 
 		if counter%1000 == 0 {
 			log.Println(counter)

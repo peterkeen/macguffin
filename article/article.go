@@ -1,4 +1,4 @@
-package mgarticle
+package article
 
 import (
 	"errors"

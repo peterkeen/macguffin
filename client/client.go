@@ -1,10 +1,10 @@
-package mgclient
+package client
 
 import (
 	"fmt"
 	"io"
 	"log"
-	"macguffin/article"
+	"github.com/peterkeen/macguffin/article"
 	"net/textproto"
 	"strings"
 	"time"
@@ -40,9 +40,9 @@ func (client *UsenetClient) Group(group string) (int64, int64, int64, error) {
 	res := client.MustCommand(fmt.Sprintf("group %s", group), 211)
 	parts := strings.Split(res, " ")
 
-	total := mgarticle.ParseInt64(parts[0])
-	low := mgarticle.ParseInt64(parts[1])
-	high := mgarticle.ParseInt64(parts[2])
+	total := article.ParseInt64(parts[0])
+	low := article.ParseInt64(parts[1])
+	high := article.ParseInt64(parts[2])
 
 	return total, low, high, nil
 }
@@ -59,9 +59,9 @@ func (client *UsenetClient) FindStart(group string, retention int) (int64, int64
 		if err != nil {
 			return 0, 0, err
 		}
-		article := mgarticle.ParseArticle(art_text)
+		art := article.ParseArticle(art_text)
 
-		parsedDate, err := article.ParsedDate()
+		parsedDate, err := art.ParsedDate()
 		if err != nil {
 			log.Fatal(err)
 		}
