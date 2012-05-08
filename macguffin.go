@@ -18,11 +18,13 @@ func main() {
 	pass := ""
 	group := ""
 	retention := 0
+	useTls := false
 
 	flag.StringVar(&addr, "addr", "", "Address of usenet server. Example: news.example.com:119")
 	flag.StringVar(&user, "user", "", "Username")
 	flag.StringVar(&pass, "pass", "", "Password")
 	flag.StringVar(&group, "group", "", "Newsgroup to get headers for")
+	flag.BoolVar(&useTls, "use-tls", false, "Use a secure connection")
 	flag.IntVar(&retention, "retention", 0, "Number of days to download")
 
 	flag.Parse()
@@ -32,7 +34,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	cl, err := client.NewUsenetClient(addr)
+	cl, err := client.NewUsenetClient(addr, useTls)
 	if err != nil {
 		fmt.Println(err)
 	}

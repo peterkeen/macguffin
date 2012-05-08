@@ -6,8 +6,10 @@ import (
 	"log"
 	"github.com/peterkeen/macguffin/article"
 	"net/textproto"
+	"crypto/tls"
 	"strings"
 	"time"
+	"errors"
 )
 
 type UsenetClient struct {
@@ -92,10 +94,23 @@ func (client *UsenetClient) OverviewStartingAt(group string, article int64) (io.
 	return client.conn.DotReader(), nil
 }
 
-func NewUsenetClient(addr string) (client *UsenetClient, err error) {
-	conn, err := textproto.Dial("tcp", addr)
+func buildConnection(addr string, useTls bool) (*textproto.Conn, error) {
+	if useTls == true {
+		tls, err := tls.Dial("tcp", addr, nil)
+		if err != nil {
+			return nil, err
+		}
+		return textproto.NewConn(tls), nil
+	} else {
+		return textproto.Dial("tcp", addr)
+	}
+	return nil, errors.New("could not build connection")
+}
+
+func NewUsenetClient(addr string, useTls bool) (client *UsenetClient, err error) {
+	conn, err := buildConnection(addr, useTls)
 	if err != nil {
-		return
+		return nil, err
 	}
 	_, _, err = conn.ReadCodeLine(200)
 	if err != nil {
