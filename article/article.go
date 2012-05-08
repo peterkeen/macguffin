@@ -38,6 +38,7 @@ func (article *Article) ParsedDate() (time.Time, error) {
 		"02 Jan 2006 15:04:05 MST",
 		"Mon, _2 Jan 2006 15:04:05 MST",
 		"Mon, _2 Jan 2006 15:04:05 -0500",
+		"Mon, _2 Jan 2006 15:04:05 +0500",
 	}
 
 	for _, format := range formats {
